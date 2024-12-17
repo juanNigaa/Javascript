@@ -113,7 +113,7 @@
         <source src="Videos/Galaxy...FONDO HD DE GALAXIA... RECURSOS DE EDICION...GALAXIA GIRANDO IMÁGENES ÚNICAS.mp4" type="video/mp4">
     </video>
     
-    <audio autoplay loop controls>
+    <audio autoplay loop  id="background-music">
         <source src="sonidos/PES 2011 Soundtrack - Ingame - UEFA Champions League 2.mp3" type="audio/mp3">
         Tu navegador no soporta la etiqueta de audio.
     </audio>
@@ -149,85 +149,109 @@
     <div class="tiempo" id="time-container">
         Tiempo transcurrido: <span id="time-display">0</span> segundos
     </div>
-</body>
+
     <script>
-        var indice=0;
-        let startTime = Date.now(); 
+        var indice = 0;
+        let startTime = Date.now();
         const timeDisplay = document.getElementById('time-display');
+        
+        // Reducir volumen de fondo
+        const backgroundMusic = document.getElementById('background-music');
+        backgroundMusic.volume = 0.03;
+
         function updateTime() {
-            const elapsedTime = Math.floor((Date.now() - startTime) / 1000); 
-            timeDisplay.innerText = elapsedTime; 
+            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            timeDisplay.innerText = elapsedTime;
         }
         setInterval(updateTime, 1000);
         
         var imagenes = [
-            '/Personajes/BlackMage.png',
-            'PracticaJava/Personajes/Bomberman.png',
-            'PracticaJava/Personajes/Fox.png',
-            'PracticaJava/Personajes/goku.png',
-            'PracticaJava/Personajes/IChigo.png',
-            'PracticaJava/Personajes/JigglyPuff.png',
-            'PracticaJava/Personajes/LLoyd.png',
-            'PracticaJava/Personajes/lucario.png',
-            'PracticaJava/Personajes/mrgame.png',
-            'PracticaJava/Personajes/naruto.png',
-            'PracticaJava/Personajes/npc.png',
-            'PracticaJava/Personajes/NPC2.png',
-            'PracticaJava/Personajes/Pacman.png',
-            'PracticaJava/Personajes/Pikachu.png',
-            'PracticaJava/Personajes/SANDBAG.png',
-            'PracticaJava/Personajes/Wauluigi.png'
+            'Personajes/BlackMage.png',
+            'Personajes/Bomberman.png',
+            'Personajes/Fox.png',
+            'Personajes/goku.png',
+            'Personajes/IChigo.png',
+            'Personajes/JigglyPuff.png',
+            'Personajes/LLoyd.png',
+            'Personajes/lucario.png',
+            'Personajes/mrgame.png',
+            'Personajes/naruto.png',
+            'Personajes/npc.png',
+            'Personajes/NPC2.png',
+            'Personajes/Pacman.png',
+            'Personajes/Pikachu.png',
+            'Personajes/SANDBAG.png',
+            'Personajes/Wauluigi.png'
         ];
-
-        var luchadores = [];
+        var voces=['sonidos/BlackMage.mp3','sonidos/Bomberman.mp3','sonidos/Fox.mp3','sonidos/Goku.mp3','sonidos/ichigo.mp3','sonidos/JiglyPuff.mp3','sonidos/Lloyd.mp3','sonidos/Lucario.mp3','sonidos/MrGameWatch.mp3','sonidos/Naruto.mp3','sonidos/sonic.mp3','sonidos/Luffy.mp3','sonidos/Pacman.mp3','sonidos/Pikachu.mp3','sonidos/Sandbag.mp3','sonidos/Waluigi.mp3'];
 
         function obtenerImagenAleatoria() {
-            var indiceAleatorio = Math.floor(Math.random() * imagenes.length);
-            return imagenes[indiceAleatorio];
-        }
+    if (imagenes.length === 0) {
+        console.error("No quedan imágenes disponibles.");
+        return null;
+    }
+    function obtenerVozAleatoria(indice) {
+    if (vocesDisponibles.length === 0) {
+        console.error("No quedan voces disponibles.");
+        return null;
+    }
+
+    var vozSeleccionada = vocesDisponibles[indice];
+
+    // Eliminar la voz seleccionada del array
+    vocesDisponibles.splice(indice, 1);
+
+    return vozSeleccionada;
+}
+    var imagenesCopia = [...imagenes]; // Crea una copia del array original
+    var indiceAleatorio = Math.floor(Math.random() * imagenesCopia.length);
+    return imagenesCopia.splice(indiceAleatorio, 1)[0]; // Elimina y devuelve la imagen de la copia
+}
 
         function sortear() {
-            luchadores = [
-                new luchador("Juan", obtenerImagenAleatoria()),
-                new luchador("Carlos", obtenerImagenAleatoria()),
-                new luchador("Luis", obtenerImagenAleatoria()),
-                new luchador("Pedro", obtenerImagenAleatoria()),
-                new luchador("Ana", obtenerImagenAleatoria()),
-                new luchador("María", obtenerImagenAleatoria()),
-                new luchador("José", obtenerImagenAleatoria()),
-                new luchador("Sofia", obtenerImagenAleatoria()),
-                new luchador("David", obtenerImagenAleatoria()),
-                new luchador("Elena", obtenerImagenAleatoria()),
-                new luchador("Miguel", obtenerImagenAleatoria()),
-                new luchador("Lucía", obtenerImagenAleatoria()),
-                new luchador("Roberto", obtenerImagenAleatoria()),
-                new luchador("Carmen", obtenerImagenAleatoria()),
-                new luchador("Antonio", obtenerImagenAleatoria()),
-                new luchador("Sara", obtenerImagenAleatoria())
-            ];
-            
+        luchadores = [
+            new luchador("Juan", obtenerImagenAleatoria()),
+            new luchador("Carlos", obtenerImagenAleatoria()),
+            new luchador("Luis", obtenerImagenAleatoria()),
+            new luchador("Pedro", obtenerImagenAleatoria()),
+            new luchador("Ana", obtenerImagenAleatoria()),
+            new luchador("María", obtenerImagenAleatoria()),
+            new luchador("José", obtenerImagenAleatoria()),
+            new luchador("Sofia", obtenerImagenAleatoria()),
+            new luchador("David", obtenerImagenAleatoria()),
+            new luchador("Elena", obtenerImagenAleatoria()),
+            new luchador("Miguel", obtenerImagenAleatoria()),
+            new luchador("Lucía", obtenerImagenAleatoria()),
+            new luchador("Roberto", obtenerImagenAleatoria()),
+            new luchador("Carmen", obtenerImagenAleatoria()),
+            new luchador("Antonio", obtenerImagenAleatoria()),
+            new luchador("Sara", obtenerImagenAleatoria())
+        ];
 
-            if (indice < luchadores.length) { 
-        var div = document.getElementById("player-" + (indice + 1)); 
-        div.innerHTML = luchadores[indice].nombre + 
-                        '<img src="' + luchadores[indice].imagen + '" alt="' + luchadores[indice].nombre + '">'; 
-        
-        
-        var nombre = luchadores[indice].nombre;
-        var utterance = new SpeechSynthesisUtterance(nombre); 
-        utterance.volume = 1; 
-            utterance.rate = 1.2; 
+        if (indice < luchadores.length) {
+            var div = document.getElementById("player-" + (indice + 1));
+            div.innerHTML = luchadores[indice].nombre + 
+                            '<img src="' + luchadores[indice].imagen + '" alt="' + luchadores[indice].nombre + '">';
+
+            var nombre = luchadores[indice].nombre;
+            var voz = luchadores[indice].voz;
+            var utterance = new SpeechSynthesisUtterance(nombre);
+            utterance.volume = 1;
+            utterance.rate = 1.2;
             utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance); 
-        
-        indice++; 
-    }
-        }
+            window.speechSynthesis.speak(utterance);
 
-        function luchador(nombre, imagen) {
-            this.nombre = nombre;
-            this.imagen = imagen;
+            indice++;
+        }
+    }
+
+        
+        class luchador {
+            constructor(nombre, imagen) {
+                this.nombre = nombre;
+                this.imagen = imagen;
+            }
         }
     </script>
-
+</body>
 </html>
