@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo 1 contra 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #torneo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            height: 100%;
+        }
+
+        .player-box {
+            width: 130px;
+            height: 50px;
+            border: 2px solid white;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin: 10px auto;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bold;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .round-left .player-box img {
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+        }
+
+        .round-right .player-box img {
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+        }
+
+        .tiempo {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        #boton {
+            position: absolute;
+            top: 10px;
+            left: 30%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        button {
+            background-color: #ff5733;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #c4421d;
+        }
+
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="video-background">
+        <source src="\Videos\Galaxy...FONDO HD DE GALAXIA... RECURSOS DE EDICION...GALAXIA GIRANDO IMÁGENES ÚNICAS.mp4" type="video/mp4">
+    </video>
+    
+    <audio autoplay loop controls>
+        <source src="\sonidos\PES 2011 Soundtrack - Ingame - UEFA Champions League 2.mp3" type="audio/mp3">
+        Tu navegador no soporta la etiqueta de audio.
+    </audio>
+
+    <div id="torneo-container">
+        <div class="round round-left">
+            <div class="player-box" id="player-1"></div>
+            <div class="player-box" id="player-2"></div>
+            <div class="player-box" id="player-3"></div>
+            <div class="player-box" id="player-4"></div>
+            <div class="player-box" id="player-5"></div>
+            <div class="player-box" id="player-6"></div>
+            <div class="player-box" id="player-7"></div>
+            <div class="player-box" id="player-8"></div>
+        </div>
+
+        <div class="round round-right">
+            <div class="player-box" id="player-9"></div>
+            <div class="player-box" id="player-10"></div>
+            <div class="player-box" id="player-11"></div>
+            <div class="player-box" id="player-12"></div>
+            <div class="player-box" id="player-13"></div>
+            <div class="player-box" id="player-14"></div>
+            <div class="player-box" id="player-15"></div>
+            <div class="player-box" id="player-16"></div>
+        </div>
+    </div>
+    
+    <div id="boton">
+        <button onclick="sortear()">Sortear</button>
+    </div>
+
+    <div class="tiempo" id="time-container">
+        Tiempo transcurrido: <span id="time-display">0</span> segundos
+    </div>
+</body>
+    <script>
+        var indice=0;
+        let startTime = Date.now(); 
+        const timeDisplay = document.getElementById('time-display');
+        function updateTime() {
+            const elapsedTime = Math.floor((Date.now() - startTime) / 1000); 
+            timeDisplay.innerText = elapsedTime; 
+        }
+        setInterval(updateTime, 1000);
+        
+        var imagenes = [
+            '/Personajes/BlackMage.png',
+            '/Personajes/Bomberman.png',
+            '/Personajes/Fox.png',
+            '/Personajes/goku.png',
+            '/Personajes/IChigo.png',
+            '/Personajes/JigglyPuff.png',
+            '/Personajes/LLoyd.png',
+            '/Personajes/lucario.png',
+            '/Personajes/mrgame.png',
+            '/Personajes/naruto.png',
+            '/Personajes/npc.png',
+            '/Personajes/NPC2.png',
+            '/Personajes/Pacman.png',
+            '/Personajes/Pikachu.png',
+            '/Personajes/SANDBAG.png',
+            '/Personajes/Wauluigi.png'
+        ];
+
+        var luchadores = [];
+
+        function obtenerImagenAleatoria() {
+            var indiceAleatorio = Math.floor(Math.random() * imagenes.length);
+            return imagenes[indiceAleatorio];
+        }
+
+        function sortear() {
+            luchadores = [
+                new luchador("Juan", obtenerImagenAleatoria()),
+                new luchador("Carlos", obtenerImagenAleatoria()),
+                new luchador("Luis", obtenerImagenAleatoria()),
+                new luchador("Pedro", obtenerImagenAleatoria()),
+                new luchador("Ana", obtenerImagenAleatoria()),
+                new luchador("María", obtenerImagenAleatoria()),
+                new luchador("José", obtenerImagenAleatoria()),
+                new luchador("Sofia", obtenerImagenAleatoria()),
+                new luchador("David", obtenerImagenAleatoria()),
+                new luchador("Elena", obtenerImagenAleatoria()),
+                new luchador("Miguel", obtenerImagenAleatoria()),
+                new luchador("Lucía", obtenerImagenAleatoria()),
+                new luchador("Roberto", obtenerImagenAleatoria()),
+                new luchador("Carmen", obtenerImagenAleatoria()),
+                new luchador("Antonio", obtenerImagenAleatoria()),
+                new luchador("Sara", obtenerImagenAleatoria())
+            ];
+            
+
+            if (indice < luchadores.length) { 
+        var div = document.getElementById("player-" + (indice + 1)); 
+        div.innerHTML = luchadores[indice].nombre + 
+                        '<img src="' + luchadores[indice].imagen + '" alt="' + luchadores[indice].nombre + '">'; 
+        
+        
+        var nombre = luchadores[indice].nombre;
+        var utterance = new SpeechSynthesisUtterance(nombre); 
+        utterance.volume = 1; 
+            utterance.rate = 1.2; 
+            utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance); 
+        
+        indice++; 
+    }
+        }
+
+        function luchador(nombre, imagen) {
+            this.nombre = nombre;
+            this.imagen = imagen;
+        }
+    </script>
+
+</html>
